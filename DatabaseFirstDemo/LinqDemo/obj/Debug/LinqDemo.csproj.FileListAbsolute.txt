@@ -1,0 +1,5 @@
+C:\git\adonetb\DatabaseFirstDemo\LinqDemo\bin\Debug\LinqDemo.dll
+C:\git\adonetb\DatabaseFirstDemo\LinqDemo\bin\Debug\LinqDemo.pdb
+C:\git\adonetb\DatabaseFirstDemo\LinqDemo\obj\Debug\LinqDemo.csprojResolveAssemblyReference.cache
+C:\git\adonetb\DatabaseFirstDemo\LinqDemo\obj\Debug\LinqDemo.dll
+C:\git\adonetb\DatabaseFirstDemo\LinqDemo\obj\Debug\LinqDemo.pdb
