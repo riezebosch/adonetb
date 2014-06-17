@@ -56,7 +56,7 @@
     <Compile Include="Department.cs">
       <DependentUpon>Schools.tt</DependentUpon>
     </Compile>
-    <Compile Include="OfficeAssignment.cs">
+    <Compile Include="Instructor.cs">
       <DependentUpon>Schools.tt</DependentUpon>
     </Compile>
     <Compile Include="OnlineCourse.cs">
@@ -84,6 +84,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Schools.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Student.cs">
+      <DependentUpon>Schools.tt</DependentUpon>
     </Compile>
     <Compile Include="StudentGrade.cs">
       <DependentUpon>Schools.tt</DependentUpon>

@@ -28,12 +28,13 @@ namespace DatabaseFirstDemo
 
                 foreach (var person in context
                     .People
+                    .OfType<Student>()
                     .Include(p => 
-                        p.StudentGrades.Select(g => g.Course)))
+                        p.Grades.Select(g => g.Course)))
                 {
                     Console.WriteLine(person.FirstName);
 
-                    foreach (var grade in person.StudentGrades)
+                    foreach (var grade in person.Grades)
                     {
                         Console.WriteLine("  {1}: {0}", grade.Grade, grade.Course.Name);
                     }

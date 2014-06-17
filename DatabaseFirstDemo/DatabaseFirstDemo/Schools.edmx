@@ -36,9 +36,9 @@
           <Key>
             <PropertyRef Name="InstructorID" />
           </Key>
-          <Property Name="InstructorID" Type="int" Nullable="false" />
-          <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="InstructorID" Nullable="false" Type="int" />
+          <Property Name="Location" Nullable="false" MaxLength="50" Type="nvarchar" />
+          <Property Name="Timestamp" Nullable="false" StoreGeneratedPattern="Computed" Type="timestamp" />
         </EntityType>
         <EntityType Name="OnlineCourse">
           <Key>
@@ -112,8 +112,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OfficeAssignment_Person">
-          <End Role="Person" Type="Self.Person" Multiplicity="1" />
-          <End Role="OfficeAssignment" Type="Self.OfficeAssignment" Multiplicity="0..1" />
+          <End Type="Self.Person" Multiplicity="1" Role="Person" />
+          <End Type="Self.OfficeAssignment" Multiplicity="0..1" Role="OfficeAssignment" />
           <ReferentialConstraint>
             <Principal Role="Person">
               <PropertyRef Name="PersonID" />
@@ -193,8 +193,8 @@
             <End Role="CourseInstructor" EntitySet="CourseInstructor" />
           </AssociationSet>
           <AssociationSet Name="FK_OfficeAssignment_Person" Association="Self.FK_OfficeAssignment_Person">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="OfficeAssignment" EntitySet="OfficeAssignment" />
+            <End EntitySet="Person" Role="Person" />
+            <End EntitySet="OfficeAssignment" Role="OfficeAssignment" />
           </AssociationSet>
           <AssociationSet Name="FK_OnlineCourse_Course" Association="Self.FK_OnlineCourse_Course">
             <End Role="Course" EntitySet="Course" />
@@ -228,8 +228,8 @@
           <NavigationProperty Name="Department" Relationship="Self.FK_Course_Department" FromRole="Course" ToRole="Department" />
           <NavigationProperty Name="OnsiteCourse" Relationship="Self.FK_OnsiteCourse_Course" FromRole="Course" ToRole="OnsiteCourse" />
           <NavigationProperty Name="StudentGrades" Relationship="Self.FK_StudentGrade_Course" FromRole="Course" ToRole="StudentGrade" />
-          <NavigationProperty Name="People" Relationship="Self.CourseInstructor" FromRole="Course" ToRole="Person" />
           <NavigationProperty Name="OnlineCourse" Relationship="SchoolModel.FK_OnlineCourse_Course" FromRole="Course" ToRole="OnlineCourse" />
+          <NavigationProperty Name="Instructors" Relationship="SchoolModel.CourseInstructor" FromRole="Course" ToRole="Instructor" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -242,15 +242,6 @@
           <Property Name="Administrator" Type="Int32" />
           <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Department" FromRole="Department" ToRole="Course" />
         </EntityType>
-        <EntityType Name="OfficeAssignment">
-          <Key>
-            <PropertyRef Name="InstructorID" />
-          </Key>
-          <Property Name="InstructorID" Type="Int32" Nullable="false" />
-          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Person" Relationship="Self.FK_OfficeAssignment_Person" FromRole="OfficeAssignment" ToRole="Person" />
-        </EntityType>
         <EntityType Name="OnsiteCourse">
           <Key>
             <PropertyRef Name="CourseID" />
@@ -261,18 +252,13 @@
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Course" Relationship="Self.FK_OnsiteCourse_Course" FromRole="OnsiteCourse" ToRole="Course" />
         </EntityType>
-        <EntityType Name="Person">
+        <EntityType Name="Person" Abstract="false">
           <Key>
             <PropertyRef Name="PersonID" />
           </Key>
           <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HireDate" Type="DateTime" Precision="3" />
-          <Property Name="EnrollmentDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="OfficeAssignment" Relationship="Self.FK_OfficeAssignment_Person" FromRole="Person" ToRole="OfficeAssignment" />
-          <NavigationProperty Name="StudentGrades" Relationship="Self.FK_StudentGrade_Student" FromRole="Person" ToRole="StudentGrade" />
-          <NavigationProperty Name="Courses" Relationship="Self.CourseInstructor" FromRole="Person" ToRole="Course" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" />
         </EntityType>
         <EntityType Name="StudentGrade">
           <Key>
@@ -283,7 +269,7 @@
           <Property Name="StudentID" Type="Int32" Nullable="false" />
           <Property Name="Grade" Type="Decimal" Precision="3" Scale="2" />
           <NavigationProperty Name="Course" Relationship="Self.FK_StudentGrade_Course" FromRole="StudentGrade" ToRole="Course" />
-          <NavigationProperty Name="Person" Relationship="Self.FK_StudentGrade_Student" FromRole="StudentGrade" ToRole="Person" />
+          <NavigationProperty Name="Student" Relationship="SchoolModel.StudentStudentGrade" FromRole="StudentGrade" ToRole="Student" />
         </EntityType>
         <Association Name="FK_Course_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1" />
@@ -321,38 +307,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OfficeAssignment_Person">
-          <End Role="Person" Type="Self.Person" Multiplicity="1" />
-          <End Role="OfficeAssignment" Type="Self.OfficeAssignment" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="PersonID" />
-            </Principal>
-            <Dependent Role="OfficeAssignment">
-              <PropertyRef Name="InstructorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StudentGrade_Student">
-          <End Role="Person" Type="Self.Person" Multiplicity="1" />
-          <End Role="StudentGrade" Type="Self.StudentGrade" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="PersonID" />
-            </Principal>
-            <Dependent Role="StudentGrade">
-              <PropertyRef Name="StudentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="CourseInstructor">
-          <End Role="Course" Type="Self.Course" Multiplicity="*" />
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Courses" EntityType="Self.Course" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
-          <EntitySet Name="OfficeAssignments" EntityType="Self.OfficeAssignment" />
           <EntitySet Name="OnsiteCourses" EntityType="Self.OnsiteCourse" />
           <EntitySet Name="People" EntityType="Self.Person" />
           <EntitySet Name="StudentGrades" EntityType="Self.StudentGrade" />
@@ -368,22 +325,18 @@
             <End Role="Course" EntitySet="Courses" />
             <End Role="StudentGrade" EntitySet="StudentGrades" />
           </AssociationSet>
-          <AssociationSet Name="FK_OfficeAssignment_Person" Association="Self.FK_OfficeAssignment_Person">
-            <End Role="Person" EntitySet="People" />
-            <End Role="OfficeAssignment" EntitySet="OfficeAssignments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StudentGrade_Student" Association="Self.FK_StudentGrade_Student">
-            <End Role="Person" EntitySet="People" />
-            <End Role="StudentGrade" EntitySet="StudentGrades" />
-          </AssociationSet>
-          <AssociationSet Name="CourseInstructor" Association="Self.CourseInstructor">
-            <End Role="Course" EntitySet="Courses" />
-            <End Role="Person" EntitySet="People" />
-          </AssociationSet>
           <EntitySet Name="OnlineCourses" EntityType="SchoolModel.OnlineCourse" />
           <AssociationSet Name="FK_OnlineCourse_Course" Association="SchoolModel.FK_OnlineCourse_Course">
             <End Role="Course" EntitySet="Courses" />
             <End Role="OnlineCourse" EntitySet="OnlineCourses" />
+          </AssociationSet>
+          <AssociationSet Name="CourseInstructor" Association="SchoolModel.CourseInstructor">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Instructor" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="StudentStudentGrade" Association="SchoolModel.StudentStudentGrade">
+            <End Role="Student" EntitySet="People" />
+            <End Role="StudentGrade" EntitySet="StudentGrades" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="OnlineCourse">
@@ -403,6 +356,31 @@
             </Principal>
             <Dependent Role="OnlineCourse">
               <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Instructor" BaseType="SchoolModel.Person">
+          <Property Name="HireDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="Location" Type="String" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="SchoolModel.CourseInstructor" FromRole="Instructor" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="Student" BaseType="SchoolModel.Person">
+          <Property Name="EnrollmentDate" Type="DateTime" Precision="3" Nullable="false" />
+          <NavigationProperty Name="Grades" Relationship="SchoolModel.StudentStudentGrade" FromRole="Student" ToRole="StudentGrade" />
+        </EntityType>
+        <Association Name="CourseInstructor">
+          <End Type="SchoolModel.Course" Role="Course" Multiplicity="*" />
+          <End Type="SchoolModel.Instructor" Role="Instructor" Multiplicity="*" />
+        </Association>
+        <Association Name="StudentStudentGrade">
+          <End Type="SchoolModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="SchoolModel.StudentGrade" Role="StudentGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="StudentGrade">
+              <PropertyRef Name="StudentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -433,15 +411,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OfficeAssignments">
-            <EntityTypeMapping TypeName="SchoolModel.OfficeAssignment">
-              <MappingFragment StoreEntitySet="OfficeAssignment">
-                <ScalarProperty Name="InstructorID" ColumnName="InstructorID" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OnsiteCourses">
             <EntityTypeMapping TypeName="SchoolModel.OnsiteCourse">
               <MappingFragment StoreEntitySet="OnsiteCourse">
@@ -453,13 +422,29 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="People">
-            <EntityTypeMapping TypeName="SchoolModel.Person">
+            <EntityTypeMapping TypeName="IsTypeOf(SchoolModel.Instructor)">
               <MappingFragment StoreEntitySet="Person">
                 <ScalarProperty Name="PersonID" ColumnName="PersonID" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <Condition ColumnName="HireDate" IsNull="false" />
+              </MappingFragment>
+              <MappingFragment StoreEntitySet="OfficeAssignment">
+                <ScalarProperty Name="PersonID" ColumnName="InstructorID" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(SchoolModel.Student)">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
                 <ScalarProperty Name="EnrollmentDate" ColumnName="EnrollmentDate" />
+                <Condition ColumnName="EnrollmentDate" IsNull="false" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(SchoolModel.Person)">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -473,14 +458,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CourseInstructor" TypeName="SchoolModel.CourseInstructor" StoreEntitySet="CourseInstructor">
-            <EndProperty Name="Course">
-              <ScalarProperty Name="CourseID" ColumnName="CourseID" />
-            </EndProperty>
-            <EndProperty Name="Person">
-              <ScalarProperty Name="PersonID" ColumnName="PersonID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="OnlineCourses">
             <EntityTypeMapping TypeName="SchoolModel.OnlineCourse">
               <MappingFragment StoreEntitySet="OnlineCourse">
@@ -489,6 +466,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="CourseInstructor" TypeName="SchoolModel.CourseInstructor" StoreEntitySet="CourseInstructor">
+            <EndProperty Name="Instructor">
+              <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+            </EndProperty>
+            <EndProperty Name="Course">
+              <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

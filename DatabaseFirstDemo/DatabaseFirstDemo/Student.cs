@@ -12,12 +12,15 @@ namespace DatabaseFirstDemo
     using System;
     using System.Collections.Generic;
     
-    public partial class OfficeAssignment
+    public partial class Student : Person
     {
-        public int InstructorID { get; set; }
-        public string Location { get; set; }
-        public byte[] Timestamp { get; set; }
+        public Student()
+        {
+            this.Grades = new HashSet<StudentGrade>();
+        }
     
-        public virtual Person Person { get; set; }
+        public System.DateTime EnrollmentDate { get; set; }
+    
+        public virtual ICollection<StudentGrade> Grades { get; set; }
     }
 }

@@ -4,21 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="792e309ed3664112a9b56df7abb12061" Name="Diagram1">
+      <Diagram DiagramId="792e309ed3664112a9b56df7abb12061" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="SchoolModel.Course" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SchoolModel.Department" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SchoolModel.OfficeAssignment" Width="1.5" PointX="7.5" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SchoolModel.OnsiteCourse" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SchoolModel.Person" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SchoolModel.StudentGrade" Width="1.5" PointX="7.5" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="SchoolModel.FK_Course_Department" ManuallyRouted="false" />
         <AssociationConnector Association="SchoolModel.FK_OnsiteCourse_Course" ManuallyRouted="false" />
         <AssociationConnector Association="SchoolModel.FK_StudentGrade_Course" ManuallyRouted="false" />
-        <AssociationConnector Association="SchoolModel.FK_OfficeAssignment_Person" ManuallyRouted="false" />
-        <AssociationConnector Association="SchoolModel.FK_StudentGrade_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="SchoolModel.CourseInstructor" ManuallyRouted="false" />
         <EntityTypeShape EntityType="SchoolModel.OnlineCourse" Width="1.5" PointX="5.25" PointY="1.875" />
         <AssociationConnector Association="SchoolModel.FK_OnlineCourse_Course" />
+        <EntityTypeShape EntityType="SchoolModel.Instructor" Width="1.5" PointX="4.25" PointY="10" />
+        <EntityTypeShape EntityType="SchoolModel.Student" Width="1.5" PointX="6.625" PointY="10.25" />
+        <InheritanceConnector EntityType="SchoolModel.Student" />
+        <InheritanceConnector EntityType="SchoolModel.Instructor" />
+        <AssociationConnector Association="SchoolModel.CourseInstructor" />
+        <AssociationConnector Association="SchoolModel.StudentStudentGrade" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
