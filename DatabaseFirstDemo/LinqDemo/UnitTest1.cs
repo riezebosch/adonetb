@@ -154,5 +154,25 @@ namespace LinqDemo
         {
             public string Name { get; set; }
         }
+
+        [TestMethod]
+        public void DeferredExecution()
+        {
+            var items = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 };
+            var query = from i in items
+                        where i % 2 == 0
+                        select i;
+
+            items.Add(4);
+            Console.WriteLine(string.Join(", ", query));
+
+            query = from i in query
+                    select i * 3;
+
+            query = items.Where(i => i % 2 == 0).Select(i => i).Select(i => i * 3);
+
+            items.Add(4);
+            Console.WriteLine(string.Join(", ", query));
+        }
     }
 }
