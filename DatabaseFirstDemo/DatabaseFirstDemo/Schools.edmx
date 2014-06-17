@@ -349,7 +349,7 @@
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
           <End Role="Person" Type="Self.Person" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Courses" EntityType="Self.Course" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="OfficeAssignments" EntityType="Self.OfficeAssignment" />

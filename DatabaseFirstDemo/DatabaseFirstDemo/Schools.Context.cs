@@ -18,6 +18,7 @@ namespace DatabaseFirstDemo
         public SchoolEntities()
             : base("name=SchoolEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

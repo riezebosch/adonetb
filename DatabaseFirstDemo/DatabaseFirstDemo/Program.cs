@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace DatabaseFirstDemo
 {
@@ -18,13 +19,25 @@ namespace DatabaseFirstDemo
                             where IsValid(p.FirstName)
                             select p.FirstName + " " + p.LastName;
 
-                Console.WriteLine(query);
+                //Console.WriteLine(query);
 
-                foreach (var p in query)
+                //foreach (var p in query)
+                //{
+                //    Console.WriteLine(p);
+                //}
+
+                foreach (var person in context
+                    .People
+                    .Include(p => 
+                        p.StudentGrades.Select(g => g.Course)))
                 {
-                    Console.WriteLine(p);
-                }
+                    Console.WriteLine(person.FirstName);
 
+                    foreach (var grade in person.StudentGrades)
+                    {
+                        Console.WriteLine("  {1}: {0}", grade.Grade, grade.Course.Name);
+                    }
+                }
             }
         }
 
