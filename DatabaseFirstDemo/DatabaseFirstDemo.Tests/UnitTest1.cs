@@ -6,6 +6,7 @@ using System.Data.Entity.Validation;
 using System.Data;
 using System.Data.Entity;
 using System.Transactions;
+using System.Text;
 
 namespace DatabaseFirstDemo.Tests
 {
@@ -171,6 +172,42 @@ namespace DatabaseFirstDemo.Tests
             {
                 context.People.RemoveRange(context.People.Where(p => p.FirstName == "Pietje"));
                 context.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void LoadByKey_ShouldReturn_EntityWithKeyOrNullIfNotFound()
+        {
+            using (var context = new SchoolEntities())
+            {
+                var p = context.People.Find(1);
+                Assert.IsNotNull(p);
+
+                var ne = context.People.Find(12345);
+                Assert.IsNull(ne);
+            }
+        }
+
+        [TestMethod]
+        public void LoadByKey_ShouldNot_InvokeQueryOnSubsequentRequest()
+        {
+            using (var context = new SchoolEntities())
+            {
+                var sb = new StringBuilder();
+                context.Database.Log = s => sb.Append(s);
+
+                var isaiah = context.People.First(p => p.FirstName == "Isaiah");
+                Console.WriteLine(sb.ToString());
+                Assert.AreNotEqual("", sb.ToString(), "Expecting DB lookup with First");
+                
+                sb.Clear();
+                context.People.Find(isaiah.PersonID);
+                Assert.AreEqual("", sb.ToString(), "Expecting entity loaded from cache with Find");
+
+                context.People.First(p => p.PersonID == isaiah.PersonID);
+                Console.WriteLine(sb.ToString());
+                Assert.AreNotEqual("", sb.ToString(), "Expecting DB lookup with First");
+
             }
         }
     }
