@@ -36,5 +36,38 @@ namespace LinqToXmlDemo
                 .Sum(b => (decimal?)b.Element(ns + "price") ?? 0);
             Console.WriteLine(totaal);
         }
+
+        [TestMethod]
+        public void CreateXmlFromCode()
+        {
+            XNamespace ns = "urn:www-infosupport-com:adonetb:linq-to-xml";
+            XNamespace other = "child-items";
+
+            var doc = new XDocument(
+                new XElement(ns + "Root", 
+                    new XElement(ns + "Item1"),
+                    new XElement(ns + "Item2", 
+                        new XAttribute("some", 3)),
+                    new XElement(other + "Item3", 
+                        new XElement(other + "Item3.1"),
+                        new XElement(other + "Item3.2"))
+                ));
+
+            Console.WriteLine(doc);
+        }
+
+        [TestMethod]
+        public void AddAdditionalBook()
+        {
+            var doc = XDocument.Load("Books.xml");
+            doc.Element("catalog").Add(
+                new XElement("book", 
+                    new XElement("author", "Pietje Puk"),
+                    new XElement("title", "Pietje Puk wordt agent"),
+                    new XElement("genre", "Children"),
+                    new XElement("publish_date", DateTime.Today)));
+
+            doc.Save("Books3.xml");
+        }
     }
 }
