@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Transactions;
 using System.Text;
+using System.Data.Entity.Infrastructure;
 
 namespace DatabaseFirstDemo.Tests
 {
@@ -199,7 +200,7 @@ namespace DatabaseFirstDemo.Tests
                 var isaiah = context.People.First(p => p.FirstName == "Isaiah");
                 Console.WriteLine(sb.ToString());
                 Assert.AreNotEqual("", sb.ToString(), "Expecting DB lookup with First");
-                
+
                 sb.Clear();
                 context.People.Find(isaiah.PersonID);
                 Assert.AreEqual("", sb.ToString(), "Expecting entity loaded from cache with Find");
@@ -221,6 +222,170 @@ namespace DatabaseFirstDemo.Tests
             }
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(DbUpdateConcurrencyException))]
+        public void ConcurrentUpdate_ShouldNot_AffectRecord()
+        {
+            using (new TransactionScope())
+            {
+                using (var context1 = new SchoolEntities())
+                using (var context2 = new SchoolEntities())
+                {
+                    var p1 = context1.People.Find(1);
+                    var p2 = context2.People.Find(1);
 
+                    p1.FirstName = "UPDATE";
+                    context1.SaveChanges();
+
+                    p2.FirstName = "SOMETHING ELSE";
+                    context2.SaveChanges();
+                }
+
+                using (var context = new SchoolEntities())
+                {
+                    Assert.AreEqual("UPDATE", context.People.Find(1).FirstName);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ConcurrentUpdate_DatabaseWins()
+        {
+            using (new TransactionScope())
+            {
+                using (var context1 = new SchoolEntities())
+                using (var context2 = new SchoolEntities())
+                {
+                    var p1 = context1.People.Find(1);
+                    var p2 = context2.People.Find(1);
+
+                    p1.FirstName = "UPDATE";
+                    context1.SaveChanges();
+
+                    try
+                    {
+                        p2.FirstName = "SOMETHING ELSE";
+                        context2.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        // Refreshes the tracked entities with new values from the database.
+                        ex.Entries.Single().Reload();
+                    }
+
+                    Assert.AreEqual(p2.FirstName, "UPDATE");
+                    Assert.AreEqual(EntityState.Unchanged, context2.Entry(p2).State);
+                    
+                    context2.SaveChanges();
+                }
+
+                using (var context = new SchoolEntities())
+                {
+                    Assert.AreEqual("UPDATE", context.People.Find(1).FirstName);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ConcurrentUpdate_ClientWins()
+        {
+            using (new TransactionScope())
+            {
+                using (var context1 = new SchoolEntities())
+                using (var context2 = new SchoolEntities())
+                {
+                    var p1 = context1.People.Find(1);
+                    var p2 = context2.People.Find(1);
+
+                    p1.FirstName = "UPDATE";
+                    context1.SaveChanges();
+
+                    try
+                    {
+                        p2.FirstName = "SOMETHING ELSE";
+                        context2.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        var entry = ex.Entries.Single();
+                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+
+                        context2.SaveChanges();
+                    }
+
+                    Assert.AreEqual(p2.FirstName, "SOMETHING ELSE");
+                    Assert.AreEqual(EntityState.Unchanged, context2.Entry(p2).State);
+
+                    context2.SaveChanges();
+                }
+
+                using (var context = new SchoolEntities())
+                {
+                    Assert.AreEqual("SOMETHING ELSE", context.People.Find(1).FirstName);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ConcurrentUpdate_ClietnChooses()
+        {
+            using (new TransactionScope())
+            {
+                using (var context1 = new SchoolEntities())
+                using (var context2 = new SchoolEntities())
+                {
+                    var p1 = context1.People.Find(1);
+                    var p2 = context2.People.Find(1);
+
+                    p1.FirstName = 
+                        p1.LastName = "UPDATE";
+                    
+                    context1.SaveChanges();
+
+                    try
+                    {
+                        p2.FirstName = 
+                            p2.LastName = "SOMETHING ELSE";
+                        
+                        context2.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        var entry = ex.Entries.Single();
+
+                        var current = entry.CurrentValues;
+                        var other = entry.GetDatabaseValues();
+                        var resolved = other.Clone();
+
+                        ClientChooses(current, other, resolved);
+
+                        entry.OriginalValues.SetValues(other);
+                        entry.CurrentValues.SetValues(resolved);
+
+                        context2.SaveChanges();
+                    }
+
+                    Assert.AreEqual(p2.FirstName, "UPDATE");
+                    Assert.AreEqual(p2.LastName, "SOMETHING ELSE");
+                    Assert.AreEqual(EntityState.Unchanged, context2.Entry(p2).State);
+
+                    context2.SaveChanges();
+                }
+
+                using (var context = new SchoolEntities())
+                {
+                    
+                    var p = context.People.Find(1);
+                    Assert.AreEqual("UPDATE", p.FirstName);
+                    Assert.AreEqual("SOMETHING ELSE", p.LastName);
+                }
+            }
+        }
+
+        private void ClientChooses(DbPropertyValues current, DbPropertyValues other, DbPropertyValues resolved)
+        {
+            resolved["FirstName"] = other["FirstName"];
+            resolved["LastName"] = current["LastName"];
+        }
     }
 }
