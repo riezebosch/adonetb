@@ -36,9 +36,9 @@
           <Key>
             <PropertyRef Name="InstructorID" />
           </Key>
-          <Property Name="InstructorID" Nullable="false" Type="int" />
-          <Property Name="Location" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Timestamp" Nullable="false" StoreGeneratedPattern="Computed" Type="timestamp" />
+          <Property Name="InstructorID" Type="int" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="OnlineCourse">
           <Key>
@@ -112,8 +112,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OfficeAssignment_Person">
-          <End Type="Self.Person" Multiplicity="1" Role="Person" />
-          <End Type="Self.OfficeAssignment" Multiplicity="0..1" Role="OfficeAssignment" />
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="OfficeAssignment" Type="Self.OfficeAssignment" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
               <PropertyRef Name="PersonID" />
@@ -171,6 +171,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DeletePerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PersonID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SchoolModelStoreContainer">
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseInstructor" EntityType="Self.CourseInstructor" Schema="dbo" store:Type="Tables" />
@@ -193,8 +196,8 @@
             <End Role="CourseInstructor" EntitySet="CourseInstructor" />
           </AssociationSet>
           <AssociationSet Name="FK_OfficeAssignment_Person" Association="Self.FK_OfficeAssignment_Person">
-            <End EntitySet="Person" Role="Person" />
-            <End EntitySet="OfficeAssignment" Role="OfficeAssignment" />
+            <End Role="Person" EntitySet="Person" />
+            <End Role="OfficeAssignment" EntitySet="OfficeAssignment" />
           </AssociationSet>
           <AssociationSet Name="FK_OnlineCourse_Course" Association="Self.FK_OnlineCourse_Course">
             <End Role="Course" EntitySet="Course" />
@@ -338,6 +341,9 @@
             <End Role="Student" EntitySet="People" />
             <End Role="StudentGrade" EntitySet="StudentGrades" />
           </AssociationSet>
+          <FunctionImport Name="DeletePerson">
+            <Parameter Name="PersonID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="OnlineCourse">
           <Key>
@@ -361,7 +367,7 @@
         </Association>
         <EntityType Name="Instructor" BaseType="SchoolModel.Person">
           <Property Name="HireDate" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="Location" Type="String" Nullable="false" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Course" Relationship="SchoolModel.CourseInstructor" FromRole="Instructor" ToRole="Course" />
         </EntityType>
         <EntityType Name="Student" BaseType="SchoolModel.Person">
@@ -474,6 +480,7 @@
               <ScalarProperty Name="CourseID" ColumnName="CourseID" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="DeletePerson" FunctionName="SchoolModel.Store.DeletePerson" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -210,5 +210,14 @@ namespace DatabaseFirstDemo.Tests
 
             }
         }
+
+        [TestMethod]
+        public void UsingStoredProcedureOnContext()
+        {
+            using (var context = new SchoolEntities())
+            {
+                context.DeletePerson()
+            }
+        }
     }
 }
