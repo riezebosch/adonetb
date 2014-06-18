@@ -387,5 +387,24 @@ namespace DatabaseFirstDemo.Tests
             resolved["FirstName"] = other["FirstName"];
             resolved["LastName"] = current["LastName"];
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(DbUpdateConcurrencyException))]
+        public void ConcurrencyCheck_ShouldBe_OnAllFields()
+        {
+            using (new TransactionScope())
+            using (var context1 = new SchoolEntities())
+            using (var context2 = new SchoolEntities())
+            {
+                var p1 = context1.People.OfType<Instructor>().First();
+                var p2 = context2.People.Find(p1.PersonID) as Instructor;
+
+                p1.Location = "Smalle Zijde 35";
+                context1.SaveChanges();
+
+                p2.Location = "Kruisboog 42";
+                context2.SaveChanges();
+            }
+        }
     }
 }

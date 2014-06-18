@@ -65,6 +65,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="HireDate" Type="datetime" />
           <Property Name="EnrollmentDate" Type="datetime" />
+          <Property Name="Timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="StudentGrade">
           <Key>
@@ -260,8 +261,9 @@
             <PropertyRef Name="PersonID" />
           </Key>
           <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" ConcurrencyMode="Fixed" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" ConcurrencyMode="Fixed" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" ConcurrencyMode="None" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" DefaultValue="&quot;&quot;" ConcurrencyMode="None" />
+          <Property Name="Timestamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
         </EntityType>
         <EntityType Name="StudentGrade">
           <Key>
@@ -342,7 +344,7 @@
             <End Role="StudentGrade" EntitySet="StudentGrades" />
           </AssociationSet>
           <FunctionImport Name="DeletePerson">
-            <Parameter Name="PersonID" Mode="In" Type="Int32" />
+          <Parameter Name="PersonID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="OnlineCourse">
@@ -448,6 +450,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(SchoolModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="PersonID" ColumnName="PersonID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
