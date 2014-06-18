@@ -214,10 +214,13 @@ namespace DatabaseFirstDemo.Tests
         [TestMethod]
         public void UsingStoredProcedureOnContext()
         {
+            using (new TransactionScope())
             using (var context = new SchoolEntities())
             {
-                context.DeletePerson()
+                context.DeletePerson(1);
             }
         }
+
+
     }
 }
