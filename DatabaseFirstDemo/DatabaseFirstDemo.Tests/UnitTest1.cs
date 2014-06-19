@@ -477,11 +477,12 @@ namespace DatabaseFirstDemo.Tests
             var context = new SchoolEntities();
             context.People = new DbSetMock<Person>(data);
 
-            var query = from p in context.People.OfType<Student>().Include(s => s.Grades)
+            var query = from p in context.People
                         where p.FirstName == "Kim"
                         select p;
 
             Assert.IsFalse(query.Any());
+            Assert.IsTrue(context.People.Any(p => p.FirstName == "Pietje"));
         }
     }
 }
