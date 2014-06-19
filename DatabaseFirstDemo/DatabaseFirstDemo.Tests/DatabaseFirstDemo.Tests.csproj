@@ -63,7 +63,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DbSetExtensions.cs" />
-    <Compile Include="SchoolsEntitiesMock.cs" />
+    <Compile Include="DbSetMock.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
