@@ -13,8 +13,9 @@ namespace CodeFirstDemo
         static CodeFirstContext()
         {
             // Dit wordt zo de default initializer.
-            //Database.SetInitializer(new NullDatabaseInitializer<CodeFirstContext>());
+            Database.SetInitializer(new NullDatabaseInitializer<CodeFirstContext>());
         }
+
         public DbSet<Demo> Demos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

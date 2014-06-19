@@ -41,10 +41,10 @@ namespace CodeFirstDemo
         [TestMethod]
         public void NuMetInitializer()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<CodeFirstContext>());
-
             using (var context = new CodeFirstContext())
             {
+                Database.SetInitializer(new DropCreateDatabaseAlways<CodeFirstContext>());
+
                 context.Demos.Add(new Demo
                 {
                     Cursus = "ADONETB",
@@ -63,8 +63,11 @@ namespace CodeFirstDemo
         [TestMethod]
         public void NuMetInitieleVulling()
         {
-            Database.SetInitializer(new MyCustomDropCreateAlwaysInitializer());
-            new CodeFirstContext().Database.Initialize(true);
+            using (var context = new CodeFirstContext())
+            {
+                Database.SetInitializer(new MyCustomDropCreateAlwaysInitializer());
+                context.Database.Initialize(true);
+            }
 
             using (new TransactionScope())
             {
