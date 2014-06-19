@@ -15,10 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToXmlDemo", "LinqToXmlDemo\LinqToXmlDemo.csproj", "{336D3826-917B-4849-B3E5-D29348DEE067}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfDataServiceDemo", "WcfDataServiceDemo\WcfDataServiceDemo.csproj", "{A72B3DC8-2DB0-4C7D-AB88-9A562FED2296}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfDataServiceDemo.Client", "WcfDataServiceDemo.Client\WcfDataServiceDemo.Client.csproj", "{45456293-74EA-4F56-9541-23B876421C6E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDemo", "WebApiDemo\WebApiDemo.csproj", "{CFF2F160-C9BC-4023-8606-3F698D90B334}"
 EndProject
 Global
@@ -51,14 +47,6 @@ Global
 		{336D3826-917B-4849-B3E5-D29348DEE067}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{336D3826-917B-4849-B3E5-D29348DEE067}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{336D3826-917B-4849-B3E5-D29348DEE067}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A72B3DC8-2DB0-4C7D-AB88-9A562FED2296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A72B3DC8-2DB0-4C7D-AB88-9A562FED2296}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A72B3DC8-2DB0-4C7D-AB88-9A562FED2296}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A72B3DC8-2DB0-4C7D-AB88-9A562FED2296}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45456293-74EA-4F56-9541-23B876421C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45456293-74EA-4F56-9541-23B876421C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45456293-74EA-4F56-9541-23B876421C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45456293-74EA-4F56-9541-23B876421C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFF2F160-C9BC-4023-8606-3F698D90B334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFF2F160-C9BC-4023-8606-3F698D90B334}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFF2F160-C9BC-4023-8606-3F698D90B334}.Release|Any CPU.ActiveCfg = Release|Any CPU

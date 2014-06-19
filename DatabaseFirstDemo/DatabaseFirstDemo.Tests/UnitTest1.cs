@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Transactions;
 using System.Text;
 using System.Data.Entity.Infrastructure;
+using Moq;
+using System.Collections.Generic;
 
 namespace DatabaseFirstDemo.Tests
 {
@@ -405,6 +407,80 @@ namespace DatabaseFirstDemo.Tests
                 p2.Location = "Kruisboog 42";
                 context2.SaveChanges();
             }
+        }
+
+        [TestMethod]
+        public void ContextUsingMock_ShouldNot_BeDependantOnADabtabase()
+        {
+            var grades = new List<StudentGrade>
+            {
+                new StudentGrade
+                {
+                    Grade = 4, 
+                    Course = new Course { Name = "ADONETB" }, 
+                    StudentID = 25
+                }
+            }.AsQueryable();
+
+            var data = new List<Person>
+            {
+                new Student
+                {
+                    PersonID = 25,
+                    FirstName = "Pietje",
+                    LastName = "Puk",
+
+                    // We moeten het wel zelf aan elkaar relateren, dat gebeurt (helaas) niet automatisch
+                    Grades = grades.ToList()
+                }
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Person>>();
+            mockSet.As<IQueryable<Person>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            // Eenvoudiger setup mvb onze eigen extension method.
+            var mockSetGrades = new Mock<DbSet<StudentGrade>>();
+            mockSetGrades.SetupMock(grades);
+
+            var mockContext = new Mock<SchoolEntities>();
+
+            mockContext.Setup(m => m.People).Returns(mockSet.Object);
+            mockContext.Setup(m => m.StudentGrades).Returns(mockSetGrades.Object);
+
+            var query = from p in mockContext.Object.People.OfType<Student>().Include(s => s.Grades)
+                        where p.FirstName == "Kim"
+                        select p;
+
+            Assert.IsFalse(query.Any());
+
+            var pietje = mockContext.Object.People.FirstOrDefault(p => p.FirstName == "Pietje") as Student;
+            Assert.IsNotNull(pietje);
+            Assert.IsTrue(pietje.Grades.Any());
+        }
+
+        [TestMethod]
+        public void MockingEntityFramework_ZonderMockingFramework()
+        {
+            var data = new List<Person>
+            {
+                new Student
+                {
+                    PersonID = 25,
+                    FirstName = "Pietje",
+                    LastName = "Puk",
+                }
+            }.AsQueryable();
+
+            var context = new SchoolsEntitiesMock();
+
+            var query = from p in context.People.OfType<Student>().Include(s => s.Grades)
+                        where p.FirstName == "Kim"
+                        select p;
+
+            Assert.IsFalse(query.Any());
         }
     }
 }
