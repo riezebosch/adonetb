@@ -21,6 +21,7 @@ namespace CodeFirstDemo
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Add<TblUnderscoreConvention>();
         }
     }
 }
