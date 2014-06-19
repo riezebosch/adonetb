@@ -472,9 +472,10 @@ namespace DatabaseFirstDemo.Tests
                     FirstName = "Pietje",
                     LastName = "Puk",
                 }
-            }.AsQueryable();
+            };
 
-            var context = new SchoolsEntitiesMock();
+            var context = new SchoolEntities();
+            context.People = new DbSetMock<Person>(data);
 
             var query = from p in context.People.OfType<Student>().Include(s => s.Grades)
                         where p.FirstName == "Kim"
