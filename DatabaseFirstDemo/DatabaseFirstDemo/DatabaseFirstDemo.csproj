@@ -85,6 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Schools.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Schools.Views.cs" />
     <Compile Include="Student.cs">
       <DependentUpon>Schools.tt</DependentUpon>
     </Compile>
