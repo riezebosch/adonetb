@@ -16,10 +16,14 @@ namespace SnookerDemo
             {
                 var totaal = from w in context.Wedstrijden
                              from p in w.Personen
-                             from s in p.Scores
-                             //from b in s.Ballen
-                             select new { w.Omschrijving, p.Naam, Punten = s.Ballen.Sum(b => b.Punten) };
+                             select new 
+                             { 
+                                 w.Omschrijving,
+                                 p.Naam,
+                                 Punten = p.Scores.SelectMany(s => s.Ballen).Sum(b => b.Punten)
+                             };
 
+                // Druk de query af.
                 Console.WriteLine(totaal);
 
                 foreach (var item in totaal)
@@ -28,7 +32,10 @@ namespace SnookerDemo
                 }
 
                 var w1 = totaal.Where(w => w.Omschrijving == "Eerste wedstrijd");
-                Assert.AreEqual(2, w1.Count());
+                Assert.AreEqual(1, w1.Count());
+
+                var w2 = totaal.Where(w => w.Omschrijving == "Tweede wedstrijd");
+                Assert.AreEqual(2, w2.Count());
             }
         }
     }

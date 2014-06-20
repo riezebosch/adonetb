@@ -37,6 +37,13 @@ namespace SnookerDemo
                         {
                             ballen[2], ballen[5], ballen[8]
                         }
+                    }, new Score
+                    {
+                        Wedstrijd = w2,
+                        Ballen = new List<Bal>
+                        {
+                            ballen[1], ballen[3], ballen[7]
+                        }
                     }
                 }
             };
