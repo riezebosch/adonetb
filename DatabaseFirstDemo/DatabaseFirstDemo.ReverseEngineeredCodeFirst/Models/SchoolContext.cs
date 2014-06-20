@@ -23,7 +23,6 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Models
         public DbSet<OnsiteCourse> OnsiteCourses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<StudentGrade> StudentGrades { get; set; }
-        public DbSet<sysdiagram> sysdiagrams { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -34,7 +33,8 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Models
             modelBuilder.Configurations.Add(new OnsiteCourseMap());
             modelBuilder.Configurations.Add(new PersonMap());
             modelBuilder.Configurations.Add(new StudentGradeMap());
-            modelBuilder.Configurations.Add(new sysdiagramMap());
+            modelBuilder.Configurations.Add(new InstructorMap());
+            modelBuilder.Configurations.Add(new StudentMap());
         }
     }
 }
