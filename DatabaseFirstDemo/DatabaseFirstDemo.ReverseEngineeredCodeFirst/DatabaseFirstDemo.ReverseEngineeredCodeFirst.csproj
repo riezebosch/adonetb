@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201406201330189_Initial.Designer.cs">
       <DependentUpon>201406201330189_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406201331504_van_TPH_naar_TPT.cs" />
+    <Compile Include="Migrations\201406201331504_van_TPH_naar_TPT.Designer.cs">
+      <DependentUpon>201406201331504_van_TPH_naar_TPT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
@@ -91,6 +95,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201406201330189_Initial.resx">
       <DependentUpon>201406201330189_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406201331504_van_TPH_naar_TPT.resx">
+      <DependentUpon>201406201331504_van_TPH_naar_TPT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Choose>

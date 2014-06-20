@@ -17,7 +17,9 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Migrations
                 .PrimaryKey(t => t.PersonID)
                 .ForeignKey("dbo.Person", t => t.PersonID)
                 .Index(t => t.PersonID);
-            
+
+            Sql("INSERT INTO Instructor (PersonID, HireDate) SELECT PersonID, HireDate FROM Person WHERE HireDate IS NOT NULL");
+
             CreateTable(
                 "dbo.Student",
                 c => new
@@ -28,7 +30,9 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Migrations
                 .PrimaryKey(t => t.PersonID)
                 .ForeignKey("dbo.Person", t => t.PersonID)
                 .Index(t => t.PersonID);
-            
+
+            Sql("INSERT INTO Student (PersonID, EnrollmentDate) SELECT PersonID, EnrollmentDate FROM Person WHERE EnrollmentDate IS NOT NULL");
+
             DropColumn("dbo.Person", "HireDate");
             DropColumn("dbo.Person", "EnrollmentDate");
         }
@@ -37,6 +41,10 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Migrations
         {
             AddColumn("dbo.Person", "EnrollmentDate", c => c.DateTime());
             AddColumn("dbo.Person", "HireDate", c => c.DateTime());
+
+            //Sql("UPDATE Person SET (EnrollmentDate) VALUES (EnrollmentDate) FROM Person WHERE EnrollmentDate <> NULL");
+            //Sql("UPDATE Person SET (EnrollmentDate) VALUES (EnrollmentDate) FROM Person WHERE EnrollmentDate <> NULL");
+
             DropForeignKey("dbo.Student", "PersonID", "dbo.Person");
             DropForeignKey("dbo.Instructor", "PersonID", "dbo.Person");
             DropIndex("dbo.Student", new[] { "PersonID" });
