@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Data.Entity;
 using System.Transactions;
+using CodeFirstDemo.Migrations;
 
 namespace CodeFirstDemo
 {
@@ -101,6 +102,25 @@ namespace CodeFirstDemo
                         Cursus = "UNITTST",
                         Omschrijving = "Unit testing using Visual Studio 2013"
                     });
+            }
+        }
+
+        [TestMethod]
+        public void DuurVanDemoOpslaanInDatabase()
+        {
+            Database.SetInitializer
+                 (new MigrateDatabaseToLatestVersion<CodeFirstContext, Configuration>());
+
+            using (var context = new CodeFirstContext())
+            {
+                context.Demos.Add(new Demo
+                    {
+                        Cursus = "ADONETB",
+                        Omschrijving = "EF Migrations",
+                        Duur = 1
+                    });
+
+                context.SaveChanges();
             }
         }
     }

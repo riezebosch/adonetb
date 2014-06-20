@@ -24,5 +24,7 @@ namespace CodeFirstDemo
         [Index("OmschrijvingIndex", Order = 2, IsUnique = true)]
         [MaxLength(10)]
         public string DummyData { get; set; }
+
+        public int? Duur { get; set; }
     }
 }

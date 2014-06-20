@@ -62,6 +62,19 @@
   <ItemGroup>
     <Compile Include="CodeFirstContext.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="Migrations\201406200903134_InitialCreate.cs" />
+    <Compile Include="Migrations\201406200903134_InitialCreate.Designer.cs">
+      <DependentUpon>201406200903134_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406200953558_DuurKolom.cs" />
+    <Compile Include="Migrations\201406200953558_DuurKolom.Designer.cs">
+      <DependentUpon>201406200953558_DuurKolom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406200959358_DuurNullable.cs" />
+    <Compile Include="Migrations\201406200959358_DuurNullable.Designer.cs">
+      <DependentUpon>201406200959358_DuurNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TblUnderscoreConvention.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +85,17 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201406200903134_InitialCreate.resx">
+      <DependentUpon>201406200903134_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406200953558_DuurKolom.resx">
+      <DependentUpon>201406200953558_DuurKolom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406200959358_DuurNullable.resx">
+      <DependentUpon>201406200959358_DuurNullable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
