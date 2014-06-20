@@ -57,6 +57,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Migrations\201406201330189_Initial.cs" />
+    <Compile Include="Migrations\201406201330189_Initial.Designer.cs">
+      <DependentUpon>201406201330189_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
@@ -83,6 +87,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201406201330189_Initial.resx">
+      <DependentUpon>201406201330189_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -15,7 +15,7 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Models.Mapping
 
             this.Property(t => t.HireDate).HasColumnName("HireDate");
 
-            Map(m => m.Requires(p => p.HireDate).HasValue());
+            this.ToTable("Instructor");
         }
     }
 }

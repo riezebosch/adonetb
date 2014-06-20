@@ -11,7 +11,7 @@ namespace DatabaseFirstDemo.ReverseEngineeredCodeFirst.Models.Mapping
         public StudentMap()
         {
             this.Property(t => t.EnrollmentDate).HasColumnName("EnrollmentDate");
-            Map(m => m.Requires(p => p.EnrollmentDate).HasValue());
+            this.ToTable("Student");
         }
     }
 }
