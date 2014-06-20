@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirstDemo.Fluent.DAL", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirstDemo.Fluent.DAL.Tests", "CodeFirstDemo.Fluent.DAL.Tests\CodeFirstDemo.Fluent.DAL.Tests.csproj", "{7C392EFC-F4F5-4C11-B307-4C93040B0CBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseFirstDemo.ReverseEngineeredCodeFirst", "DatabaseFirstDemo.ReverseEngineeredCodeFirst\DatabaseFirstDemo.ReverseEngineeredCodeFirst.csproj", "{1C992800-10D9-401C-8C9C-1386CB2E667F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerDemo", "SnookerDemo\SnookerDemo.csproj", "{07244773-E976-481D-BE63-F93695A8AE2A}"
 EndProject
 Global
@@ -71,6 +73,10 @@ Global
 		{7C392EFC-F4F5-4C11-B307-4C93040B0CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C392EFC-F4F5-4C11-B307-4C93040B0CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C392EFC-F4F5-4C11-B307-4C93040B0CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C992800-10D9-401C-8C9C-1386CB2E667F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C992800-10D9-401C-8C9C-1386CB2E667F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C992800-10D9-401C-8C9C-1386CB2E667F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C992800-10D9-401C-8C9C-1386CB2E667F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07244773-E976-481D-BE63-F93695A8AE2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07244773-E976-481D-BE63-F93695A8AE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07244773-E976-481D-BE63-F93695A8AE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
