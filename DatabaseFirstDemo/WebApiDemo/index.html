@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="schoolApp">
+<head>
+    <title></title>
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/PeopleService.js"></script>
+    <script src="Scripts/PeopleController.js"></script>
+</head>
+<body>
+    <div ng-controller="peopleController">
+        <strong class="error">{{ error }}</strong>
+        <strong ng-if="loading">Loading...</strong>
+
+        <div ng-repeat="person in people">
+            <span ng-if="!editMode">
+                {{ person.firstName }} {{ person.lastName }}
+            </span>
+            <input ng-if="editMode" type="text" ng-model="person.firstName" />
+            <input ng-if="editMode" type="text" ng-model="person.lastName" />
+            <button ng-if="editMode" ng-click="save(person)">Save</button>
+        </div>
+        <div ng-if="people.length > 0">
+            <button ng-click="toggleEdit()">Edit</button>
+        </div>
+        <div ng-if="people.length == 0">
+            <strong>Nothing to see.</strong>
+        </div>
+    </div>
+</body>
+</html>
