@@ -4,28 +4,99 @@
     <title></title>
     <script src="Scripts/angular.js"></script>
     <script src="Scripts/angular-resource.js"></script>
-    <script src="Scripts/app.js"></script>
-    <script src="Scripts/PeopleService.js"></script>
-    <script src="Scripts/PeopleController.js"></script>
+    <script src="Scripts/underscore.js"></script>
+    <script>
+        angular.module("schoolApp", ["schoolApp.services"]);
+
+        /* Mapping an Angular Resource Service to a Web API
+         *   Blog: http://odetocode.com/blogs/scott/archive/2013/02/28/mapping-an-angular-resource-service-to-a-web-api.aspx
+         *   Code: https://gist.github.com/OdeToCode/5024867
+         */
+        angular.module("schoolApp.services", ["ngResource"]).
+               factory("people", function ($resource) {
+                   return $resource(
+                       "/api/people/:id",
+                       { id: "@personID" },
+                       { "update": { method: "PUT" } }
+                  );
+               });
+
+        var peopleController = function ($scope, people) {
+            var create = function (data) {
+                data.$save();
+                $scope.people.push(data);
+            };
+
+            var update = function (data) {
+                data.$update();
+            };
+
+            $scope.showEdit = function () {
+                $scope.isEditVisible = true;
+                $scope.person = new person();
+            };
+
+            $scope.save = function (data) {
+                $scope.isEditVisible = false;
+                if (data.personID) {
+                    update(data);
+                }
+                else {
+                    create(data);
+                }
+            };
+
+            $scope.edit = function (data) {
+                $scope.isEditVisible = true;
+                $scope.person = data;
+            };
+
+            $scope.delete = function (data) {
+                person.$delete();
+                $scope.people = _.without($scope.people, data);
+            };
+
+            $scope.isEditVisible = false;
+            $scope.loading = true;
+            $scope.people = people.query(function () { $scope.loading = false; });
+        };
+    </script>
 </head>
 <body>
-    <div ng-controller="peopleController">
-        <strong class="error">{{ error }}</strong>
+    <div ng-app="schoolApp" ng-controller="peopleController">
         <strong ng-if="loading">Loading...</strong>
+        <div ng-if="!loading">
+            <table>
+                <thead>
+                <th>First</th>
+                <th>Last</th>
+                <th></th>
+                </thead>
+                <tbody>
+                    <tr data-id="{{ person.personID }}" ng-repeat="person in people">
+                        <td>{{ person.firstName }}</td>
+                        <td>{{ person.lastName }}</td>
+                        <td>
+                            <button ng-click="edit(person)">Edit</button>
+                            <button ng-click="delete(person)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <div ng-repeat="person in people">
-            <span ng-if="!editMode">
-                {{ person.firstName }} {{ person.lastName }}
-            </span>
-            <input ng-if="editMode" type="text" ng-model="person.firstName" />
-            <input ng-if="editMode" type="text" ng-model="person.lastName" />
-            <button ng-if="editMode" ng-click="save(person)">Save</button>
-        </div>
-        <div ng-if="people.length > 0">
-            <button ng-click="toggleEdit()">Edit</button>
-        </div>
-        <div ng-if="people.length == 0">
-            <strong>Nothing to see.</strong>
+            <button ng-click="showEdit()">Create</button>
+
+            <div ng-show="isEditVisible" style="position:fixed; top:2%; right:2%;">
+                <form>
+                    <input type="hidden" ng-model="person.personID" />
+                    <label>First:</label>
+                    <input type="text" ng-model="person.firstName" required />
+                    <label>Last:</label>
+                    <input type="text" ng-model="person.lastName" />
+                    <input type="submit" value="Save" ng-click="save(person)" />
+                </form>
+            </div>
+
         </div>
     </div>
 </body>
